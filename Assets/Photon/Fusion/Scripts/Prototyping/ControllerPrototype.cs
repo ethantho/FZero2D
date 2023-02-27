@@ -93,17 +93,21 @@ public class ControllerPrototype : Fusion.NetworkBehaviour {
 
         float slip;
         Vector3 faceDirVector = Quaternion.Euler(0, facingAngle, 0) * Vector3.forward;
+        //Vector3 faceDirVector = Quaternion.Euler(0, _nrb.Rigidbody.rotation.y, 0) * Vector3.forward;
+
+
         Vector3 travelDirVector = Quaternion.Euler(0, travelAngle, 0) * Vector3.forward;
+        //Vector3 travelDirVector = _nrb.Rigidbody.velocity;
         slip = Vector3.SignedAngle(faceDirVector, travelDirVector, Vector3.up);
         if (slip < 0)
         {
-            travelAngle += slipAmount * Time.deltaTime;
+            travelAngle += slipAmount;// * Time.deltaTime;
         }
         else if (slip > 0)
         {
-            travelAngle -= slipAmount * Time.deltaTime;
+            travelAngle -= slipAmount;// * Time.deltaTime;
         }
-        //Debug.Log(slip);
+        Debug.Log(slip);
 
     }
 
@@ -149,17 +153,21 @@ public class ControllerPrototype : Fusion.NetworkBehaviour {
         }
         float slip;
         Vector3 faceDirVector = Quaternion.Euler(0, facingAngle, 0) * Vector3.forward;
+        //Vector3 faceDirVector = Quaternion.Euler(0, _nrb.Rigidbody.rotation.y, 0) * Vector3.forward;
+
+
         Vector3 travelDirVector = Quaternion.Euler(0, travelAngle, 0) * Vector3.forward;
+        //Vector3 travelDirVector = _nrb.Rigidbody.velocity;
         slip = Vector3.SignedAngle(faceDirVector, travelDirVector, Vector3.up);
         if (slip < 0)
         {
-            travelAngle += slipAmount * Time.deltaTime * 3;
+            travelAngle += slipAmount * 3;
         }
         else if (slip > 0)
         {
-            travelAngle -= slipAmount * Time.deltaTime * 3;
+            travelAngle -= slipAmount * 3;
         }
-        //Debug.Log(slip);
+        Debug.Log(slip);
     }
 
 
@@ -167,6 +175,13 @@ public class ControllerPrototype : Fusion.NetworkBehaviour {
     if (Runner.Config.PhysicsEngine == NetworkProjectConfig.PhysicsEngines.None) {
       return;
     }
+
+
+
+
+        facingAngle = _nrb.Rigidbody.transform.rotation.eulerAngles.y;
+
+
         if (GetInput(out NetworkInputPrototype data))
         {
             if (data.IsDown(NetworkInputPrototype.BUTTON_FORWARD))
@@ -205,21 +220,21 @@ public class ControllerPrototype : Fusion.NetworkBehaviour {
             //dirVector = Quaternion.Euler(0, -travelAngle, 0) * Vector3.left;
             direction = Quaternion.Euler(0, travelAngle, 0) * Vector3.forward;
             direction = direction.normalized;
-            //Debug.Log("Slipping");
+            Debug.Log("Slipping");
         }
         else
         {
             //dirVector = Quaternion.Euler(0, -facingAngle, 0) * Vector3.left;
             if (discreteSlip)
             {
-                direction = Quaternion.Euler(0, facingAngle, 0) * _nrb.Rigidbody.transform.forward;
+                direction = Quaternion.Euler(0, facingAngle, 0) * Vector3.forward;
             }
             else
             {
-                direction = Quaternion.Euler(0, travelAngle, 0) * _nrb.Rigidbody.transform.forward;
+                direction = Quaternion.Euler(0, travelAngle, 0) * Vector3.forward;
             }
             direction = direction.normalized;
-            //Debug.Log("Gripping");
+            Debug.Log("Gripping");
         }
         currentVel = Vector3.Lerp(currentVel, direction * currentSpeed, 0.5f);
 
