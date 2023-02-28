@@ -35,7 +35,7 @@ public class LocalCameraHandler : MonoBehaviour
     {
 
         //myCar = GameObject.
-        GameObject[] players = GameObject.FindGameObjectsWithTag("Avatar");
+        /*GameObject[] players = GameObject.FindGameObjectsWithTag("Avatar");
         foreach (GameObject player in players)
         {
             ControllerPrototype cpt = player.GetComponent<ControllerPrototype>();
@@ -49,7 +49,7 @@ public class LocalCameraHandler : MonoBehaviour
         if (localCamera.enabled)
         {
             //localCamera.transform.parent = null;
-        }
+        }*/
 
 
 
@@ -66,10 +66,12 @@ public class LocalCameraHandler : MonoBehaviour
         GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
         foreach (GameObject player in players)
         {
+            //Debug.Log("Checking for player...");
             ControllerPrototype cpt = player.GetComponent<ControllerPrototype>();
-            if (cpt.HasStateAuthority)
+            if (cpt.HasInputAuthority)
             {
                 //this.cameraAnchorPoint = player.transform;
+                Debug.Log("Found Player");
                 this.transform.parent = player.transform.GetChild(0).transform;
                 break;
             }
